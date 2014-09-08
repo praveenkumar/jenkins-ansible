@@ -1,0 +1,27 @@
+---
+- hosts: jenkins
+  user: fedora
+  sudo: yes
+  roles:
+      - { role: jenkins, tags: ['setup'] }
+      - { role: ssl, tags: ['ssl'] }
+  vars_prompt:
+      - name: "alias"
+        prompt: "Alias Name"
+        private: no
+      
+      - name: "dname"
+        prompt: "Domain/Company/First and Last Name, format should be 'CN=fedorproject.org, OU=ID, O=Fedora, L=Praveen, S=Kumar, C=DEV'"
+        private: no
+      
+      - name: "keystore"
+        prompt: "keystore Name"
+        private: no
+      
+      - name: "storepass"
+        prompt: "Enter password"
+        private: yes
+      
+      - name: "keypass"
+        prompt: "Enter key password"
+        private: yes

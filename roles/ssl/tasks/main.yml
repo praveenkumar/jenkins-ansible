@@ -1,0 +1,8 @@
+---
+- name: Create SSL directory to JENKIN_HOME
+  file: path={{ jenkins_dest }}/.ssl state=directory owner=jenkins group=jenkins
+
+- name: Generate Keystore for Jenkins to enable SSL
+  command: keytool -genkey -noprompt -alias {{ alias }} -dname {{ dname }} -keystore {{ keystore }} -storepass {{ storepass }} -keypass {{ keypass }}
+  args:
+      chdir: "{{ jenkins_dest }}/.ssl"

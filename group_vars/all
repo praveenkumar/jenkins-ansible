@@ -1,0 +1,24 @@
+---
+# Jenkins stable fedora/redhat repo
+
+jenkins_dest: /var/lib/jenkins
+jenkins:
+    repo: http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+    repo_key: http://pkg.jenkins-ci.org/redhat-stable/jenkins-ci.org.key
+    cli_dest: '{{ jenkins_dest }}/jenkins-cli.jar'
+
+plugins:
+    - mailer
+    - ldap
+    - role-strategy
+    - ssh-credentials
+    - git-client
+    - scm-api
+    - git
+    - ssh-agent
+    - gerrit-trigger
+    - instant-messaging
+    - ircbot
+    - thinBackup
+    - gerrit
+    - publish-over-ssh

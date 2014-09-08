@@ -1,0 +1,8 @@
+---
+- name: Create updates directory
+  file: path={{ jenkins_dest }}/updates state=directory owner=jenkins group=jenkins
+
+- name: Update Jenkins UpdateCenter
+  shell: wget http://updates.jenkins-ci.org/update-center.json -qO- | sed '1d;$d'  > {{ jenkins_dest }}/updates/default.json
+  notify:
+      - 'Restart Jenkins'

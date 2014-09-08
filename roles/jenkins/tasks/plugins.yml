@@ -1,0 +1,10 @@
+- name: List of Installed Plugins
+  shell: java -jar {{ jenkins.cli_dest }} -s http://localhost:8080 list-plugins | cut -f 1 -d ' '
+  register: plugins_installed
+
+- name: Install/Update Plugins
+  command: java -jar {{ jenkins.cli_dest }} -s http://localhost:8080 install-plugin {{ item }}
+  when: plugins_installed|changed and plugins_installed.stdout.find('{{ item }}') == -1
+  with_items: plugins 
+  notify:
+      - 'Restart Jenkins'

@@ -1,0 +1,39 @@
+---
+- name: Add Require Jenkins Repos
+  get_url: url={{ jenkins.repo }} dest=/etc/yum.repos.d
+  register: result
+
+- name: Add Jenkins Repo Key
+  command: rpm --import {{ jenkins.repo_key }}
+  when: result|changed
+
+- name: Clean Metadata
+  command: yum clean all
+  when: result|changed
+
+- name: Install Required Packages
+  yum: name={{ item }} state=present
+  with_items:
+      - jenkins
+      - git
+      - java
+      - wget
+
+- name: Start Jenkins Service
+  service: name=jenkins state=started
+
+- name: Enable Jenkins Service
+  service: name=jenkins enabled=yes
+
+- name: "{{ startup_delay_s | default(10) }}s delay while starting Jenkins"
+  wait_for: port=8080 delay={{ startup_delay_s | default(10) }}
+
+- name: Get Jenkins CLI tool from Localhost
+  get_url: url=http://localhost:8080/jnlpJars/jenkins-cli.jar dest={{ jenkins_dest }}
+
+- include: update_center.yml
+
+- name: "{{ startup_delay_s | default(10) }}s delay while starting Jenkins"
+  wait_for: port=8080 delay={{ startup_delay_s | default(10) }}
+
+- include: plugins.yml
