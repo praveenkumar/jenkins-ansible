@@ -25,11 +25,11 @@
 - name: Enable Jenkins Service
   service: name=jenkins enabled=yes
 
-- name: "{{ startup_delay_s | default(10) }}s delay while starting Jenkins"
-  wait_for: port=8080 delay={{ startup_delay_s | default(10) }}
+- name: "20s delay while starting Jenkins"
+  wait_for: port=8080 delay=20
 
 - name: Get Jenkins CLI tool from Localhost
-  get_url: url=http://localhost:8080/jnlpJars/jenkins-cli.jar dest={{ jenkins_dest }}
+  get_url: url=http://127.0.0.1:8080/jnlpJars/jenkins-cli.jar dest={{ jenkins_dest }}
 
 - include: update_center.yml
 

@@ -6,3 +6,7 @@
   command: keytool -genkey -noprompt -alias {{ alias }} -dname {{ dname }} -keystore {{ keystore }} -storepass {{ storepass }} -keypass {{ keypass }}
   args:
       chdir: "{{ jenkins_dest }}/.ssl"
+
+- name: Enable SSL for Jenkins and listen to port 8443
+  template: src=jenkins.j2 dest=/etc/sysconfig/jenkins
+  notify: "Restart Jenkins"
